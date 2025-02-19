@@ -6,36 +6,36 @@ Variables  ../variables/variables.py
 *** Keywords ***
 
 I navigate to the login page
-    [Arguments]    ${URL}
-    Go To    ${URL}
+    Go To    ${URL_DATA["baseUrl"]}
 
-I input correct credentials 
+I input correct credentials
     Wait Until Element Is Visible    id=user-name
     Input Text    id=user-name    ${LOGIN_DATA["correctData"]["username"]}
     Input Text    id=password    ${LOGIN_DATA["correctData"]["password"]}
 
-I input no credentials 
+I input no credentials
     Wait Until Element Is Visible    id=user-name
 
-I input only the username   
+I input only the username
     Wait Until Element Is Visible    id=user-name
     Input Text    id=user-name    ${LOGIN_DATA["correctData"]["username"]}
 
 
-I input only the password 
+I input only the password
     Wait Until Element Is Visible    id=user-name
     Input Text    id=password    ${LOGIN_DATA["correctData"]["password"]}
 
-I input wrong credentials     
+I input wrong credentials
     Wait Until Element Is Visible    id=user-name
     Input Text    id=user-name    ${LOGIN_DATA["wrongData"]["username"]}
     Input Text    id=password    ${LOGIN_DATA["wrongData"]["password"]}
-I click on the login button 
+I click on the login button
     Click Button     id=login-button
 
 I am able view the home page
-    ${location}    Get Location    
-    Should Be Equal    ${location}    https://www.saucedemo.com/inventory.html
+    ${location}    Get Location
+    ${full_url}    Catenate    SEPARATOR=    ${URL_DATA["baseUrl"]}    ${URL_DATA["inventoryUrl"]}
+    Should Be Equal    ${location}    ${full_url}
 
 
 I am able to see the expected error message for no credentials
