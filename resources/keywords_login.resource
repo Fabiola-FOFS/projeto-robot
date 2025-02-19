@@ -1,5 +1,7 @@
 *** Settings ***
 Library    SeleniumLibrary
+Variables  ../variables/variables.py
+
 
 *** Keywords ***
 
@@ -8,30 +10,26 @@ I navigate to the login page
     Go To    ${URL}
 
 I input correct credentials 
-    [Arguments]    ${USERNAME}    ${PASSWORD}
     Wait Until Element Is Visible    id=user-name
-    Input Text    id=user-name    ${USERNAME}
-    Input Text    id=password    ${PASSWORD}
+    Input Text    id=user-name    ${LOGIN_DATA["correctData"]["username"]}
+    Input Text    id=password    ${LOGIN_DATA["correctData"]["password"]}
 
 I input no credentials 
     Wait Until Element Is Visible    id=user-name
 
-I input only the username
-    [Arguments]    ${USERNAME}    
+I input only the username   
     Wait Until Element Is Visible    id=user-name
-    Input Text    id=user-name    ${USERNAME}
+    Input Text    id=user-name    ${LOGIN_DATA["correctData"]["username"]}
 
 
-I input only the password
-    [Arguments]    ${WRONG_PASSWORD}   
+I input only the password 
     Wait Until Element Is Visible    id=user-name
-    Input Text    id=password    ${WRONG_PASSWORD}
+    Input Text    id=password    ${LOGIN_DATA["correctData"]["password"]}
 
-I input wrong credentials 
-    [Arguments]    ${WRONG_USERNAME}    ${WRONG_PASSWORD}    
+I input wrong credentials     
     Wait Until Element Is Visible    id=user-name
-    Input Text    id=user-name    ${WRONG_USERNAME}
-    Input Text    id=password    ${WRONG_PASSWORD}
+    Input Text    id=user-name    ${LOGIN_DATA["wrongData"]["username"]}
+    Input Text    id=password    ${LOGIN_DATA["wrongData"]["password"]}
 I click on the login button 
     Click Button     id=login-button
 
@@ -40,6 +38,14 @@ I am able view the home page
     Should Be Equal    ${location}    https://www.saucedemo.com/inventory.html
 
 
-I am able to see the expected error message 
-    [Arguments]    ${ERROR_MESSAGE}
-    Wait Until Element Contains    class=error-message-container    ${ERROR_MESSAGE}
+I am able to see the expected error message for no credentials
+    Wait Until Element Contains    class=error-message-container    ${ERROR_MESSAGES["noCredentials"]}
+
+I am able to see the expected error message for no username
+    Wait Until Element Contains    class=error-message-container    ${ERROR_MESSAGES["noUsername"]}
+
+I am able to see the expected error message for no password
+    Wait Until Element Contains    class=error-message-container    ${ERROR_MESSAGES["noPassword"]}
+
+I am able to see the expected error message for wrong Credentials
+    Wait Until Element Contains    class=error-message-container    ${ERROR_MESSAGES["wrondCredentials"]}
